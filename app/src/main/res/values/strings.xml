@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MobileProgProject</string>
+    <string name="login">Login</string>
+    <string name="enter_your_email_here">Enter your email here...</string>
+    <string name="register">Register</string>
+    <string name="enter_your_password_here">Enter your password here...</string>
+    <string name="submit">Submit</string>
 </resources>
