@@ -74,7 +74,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        db.collection("transactions")
+        db.collection("transaction")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -90,7 +90,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                                 } catch (ParseException e) {
                                     throw new RuntimeException(e);
                                 }
-                                db.collection("categories")
+                                db.collection("category")
                                         .document(doc.get("category_id").toString())
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
