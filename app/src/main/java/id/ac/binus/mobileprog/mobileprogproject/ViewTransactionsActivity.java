@@ -2,13 +2,13 @@ package id.ac.binus.mobileprog.mobileprogproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ViewTransactionsActivity extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    ListView listView;
     FirebaseFirestore db;
 
     List<String> descriptions;
@@ -69,7 +69,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transactions);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        listView = findViewById(R.id.listView);
 
 
         db = FirebaseFirestore.getInstance();
@@ -107,5 +107,6 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                 }
         });
         TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
+        listView.setAdapter(adapter);
     }
 }

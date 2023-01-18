@@ -33,7 +33,7 @@ public class TransactionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return description.size();
+        return 0;
     }
 
     @Override
