@@ -1,6 +1,7 @@
 package id.ac.binus.mobileprog.mobileprogproject;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -22,18 +23,19 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class ViewTransactionsActivity extends AppCompatActivity {
 
     ListView listView;
     FirebaseFirestore db;
 
-    List<String> descriptions;
-    List<String> categoryNames;
-    List<Date> dates;
-    List<Integer> nominals;
+
 
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -64,6 +66,9 @@ public class ViewTransactionsActivity extends AppCompatActivity {
         return true;
     }
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,10 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if(task.isSuccessful()){
+                        List<String> descriptions = new ArrayList<>();
+                        List<String> categoryNames = new ArrayList<>();
+                        List<Date> dates = new ArrayList<>();
+                        List<Integer> nominals = new ArrayList<>();
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         for (QueryDocumentSnapshot doc: task.getResult()) {
                             if(doc.get("user_id").toString() == user.getUid()){
@@ -103,10 +112,11 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                                         });
                             }
                         }
+                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
+                        listView.setAdapter(adapter);
                     }
                 }
         });
-        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
-        listView.setAdapter(adapter);
+
     }
 }
