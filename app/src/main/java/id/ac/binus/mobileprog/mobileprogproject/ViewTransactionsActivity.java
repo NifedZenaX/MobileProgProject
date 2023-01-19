@@ -25,13 +25,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class ViewTransactionsActivity extends AppCompatActivity {
 
+    List<String> descriptions = new ArrayList<>();
+    List<String> categoryName = new ArrayList<>();
+    Map<String, String> categories = Collections.synchronizedMap(new HashMap<String, String>());
+    List<Date> dates = new ArrayList<>();
+    List<Integer> nominals = new ArrayList<>();
     ListView listView;
     FirebaseFirestore db;
 
@@ -79,44 +87,80 @@ public class ViewTransactionsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        db.collection("categories")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for(QueryDocumentSnapshot category : queryDocumentSnapshots){
+                            categories.put(category.getId(), category.get("name").toString());
+                        }
+                    }
+                });
+
         db.collection("transaction")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-                        List<String> descriptions = new ArrayList<>();
-                        List<String> categoryNames = new ArrayList<>();
-                        List<Date> dates = new ArrayList<>();
-                        List<Integer> nominals = new ArrayList<>();
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        for (QueryDocumentSnapshot doc: task.getResult()) {
-                            if(doc.get("user_id").toString() == user.getUid()){
+                        for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                            if(doc.get("user_id").toString().equals(user.getUid())){
                                 descriptions.add(doc.get("description").toString());
                                 nominals.add(Integer.parseInt(doc.get("nominal").toString()));
+                                categoryName.add(categories.get(doc.get("category_id").toString()));
                                 try {
                                     dates.add(new SimpleDateFormat("dd/MM/yyyy").parse(doc.get("date").toString()));
                                 } catch (ParseException e) {
                                     throw new RuntimeException(e);
                                 }
-                                db.collection("category")
-                                        .document(doc.get("category_id").toString())
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if(task.isSuccessful()){
-                                                    categoryNames.add(task.getResult().get("name").toString());
-                                                }
-                                            }
-                                        });
                             }
                         }
-                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
+                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates);
+                        System.out.println("Adapter: " + adapter.getCount());
                         listView.setAdapter(adapter);
                     }
-                }
-        });
+                });
+
+//        db.collection("transaction")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if(task.isSuccessful()){
+//                        List<String> descriptions = new ArrayList<>();
+//                        List<String> categoryNames = new ArrayList<>();
+//                        List<Date> dates = new ArrayList<>();
+//                        List<Integer> nominals = new ArrayList<>();
+//                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                        for (QueryDocumentSnapshot doc: task.getResult()) {
+//                            if(doc.get("user_id").toString() == user.getUid()){
+//                                descriptions.add(doc.get("description").toString());
+//                                nominals.add(Integer.parseInt(doc.get("nominal").toString()));
+//                                try {
+//                                    dates.add(new SimpleDateFormat("dd/MM/yyyy").parse(doc.get("date").toString()));
+//                                } catch (ParseException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//                                System.out.println("Description: " + descriptions.get(0));
+//                                db.collection("category")
+//                                        .document(doc.get("category_id").toString())
+//                                        .get()
+//                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                                if(task.isSuccessful()){
+//                                                    categoryNames.add(task.getResult().get("name").toString());
+//                                                }
+//                                            }
+//                                        });
+//                            }
+//                        }
+//                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
+//                        listView.setAdapter(adapter);
+//                    }
+//                }
+//        });
 
     }
 }

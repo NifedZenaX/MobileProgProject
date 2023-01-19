@@ -33,7 +33,7 @@ public class TransactionAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return description.size();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TransactionAdapter extends BaseAdapter {
         dateTxt.setText(date.get(i).toString());
 
         DecimalFormat formatter = new DecimalFormat("#.###");
-        String nominalTxt = formatter.format(this.nominal.get(i).toString());
+        String nominalTxt = formatter.format(this.nominal.get(i));
         nominal.setText("Rp. " + nominalTxt);
         return view;
     }
