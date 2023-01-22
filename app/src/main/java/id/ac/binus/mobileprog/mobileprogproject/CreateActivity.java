@@ -85,15 +85,15 @@ public class CreateActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map<String, Object> person = new HashMap<>();
-                person.put("category", categories.get(addCategory.getText().toString()));
+                Map<String, Object> transaction = new HashMap<>();
+                transaction.put("category", categories.get(addCategory.getText().toString()));
                 //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
 //                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
-                person.put("expenses", addExpenses.getText().toString());
-                person.put("date", eText.getText().toString());
-                person.put("description", addDescription.getText().toString());
+                transaction.put("expenses", addExpenses.getText().toString());
+                transaction.put("date", eText.getText().toString());
+                transaction.put("description", addDescription.getText().toString());
 
-                firestore.collection("transaction").add(person).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                firestore.collection("transaction").add(transaction).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(getApplicationContext(), "Sukses!", Toast.LENGTH_LONG).show();

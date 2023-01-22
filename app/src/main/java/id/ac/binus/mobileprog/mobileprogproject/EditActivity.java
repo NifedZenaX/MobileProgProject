@@ -80,33 +80,29 @@ public class EditActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         addCategory2.setAdapter(adapter);
 
-        //Update blm beres
-//        btnSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Map<String, Object> person = new HashMap<>();
-//                person.put("category", categories.get(addCategory.getText().toString()));
-//                //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
-////                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
-//                person.put("expenses", addExpenses.getText().toString());
-//                person.put("date", eText.getText().toString());
-//                person.put("description", addDescription.getText().toString());
-//
-//                firestore.collection("transaction").add(person).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//                        Toast.makeText(getApplicationContext(), "Sukses!", Toast.LENGTH_LONG).show();
-//                        Intent intent =  new Intent(getApplicationContext(), ViewTransactionsActivity.class);
-//                        startActivity(intent);
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//            }
-//        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> transaction = new HashMap<>();
+                transaction.put("category", categories.get(addCategory.getText().toString()));
+                //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
+//                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
+                transaction.put("expenses", addExpenses.getText().toString());
+                transaction.put("date", eText.getText().toString());
+                transaction.put("description", addDescription.getText().toString());
+
+                firestore.collection("transaction")
+                        .document(intent.getStringExtra("transId"))
+                        .update(transaction)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Intent intent2 = new Intent(getApplicationContext(), ViewTransactionsActivity.class);
+                        startActivity(intent2);
+                    }
+                });
+            }
+        });
 
         eText=(EditText) findViewById(R.id.editDate);
         eText.setInputType(InputType.TYPE_NULL);

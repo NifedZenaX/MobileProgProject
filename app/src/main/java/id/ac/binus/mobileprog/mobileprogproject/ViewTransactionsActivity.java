@@ -42,6 +42,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
     Map<String, String> categories = Collections.synchronizedMap(new HashMap<String, String>());
     List<Date> dates = new ArrayList<>();
     List<Integer> nominals = new ArrayList<>();
+    List<String> transId = new ArrayList<>();
     ListView listView;
     Button editBtn, delBtn;
     FirebaseFirestore db;
@@ -109,6 +110,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                             if(doc.get("user_id").toString().equals(user.getUid())){
+                                transId.add(doc.getId());
                                 descriptions.add(doc.get("description").toString());
                                 nominals.add(Integer.parseInt(doc.get("nominal").toString()));
                                 categoryName.add(categories.get(doc.get("category_id").toString()));
@@ -118,28 +120,8 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                                     throw new RuntimeException(e);
                                 }
                             }
-                            //Masih perlu gw otak atik buat btn del sm editnya, nanti gw cari tau lagi gimana caranya
-                            editBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    String transId = doc.getId();
-                                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-                                    intent.putExtra("transId", transId);
-                                    startActivity(intent);
-                                }
-                            });
-                            delBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    doc.getReference().delete();
-                                    //Refresh activity
-                                    Intent intent = getIntent();
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            });
                         }
-                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates);
+                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates, transId);
                         System.out.println("Adapter: " + adapter.getCount());
                         listView.setAdapter(adapter);
                     }
