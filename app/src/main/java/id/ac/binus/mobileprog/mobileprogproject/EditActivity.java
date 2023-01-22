@@ -1,7 +1,6 @@
 package id.ac.binus.mobileprog.mobileprogproject;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -25,15 +24,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
-public class CreateActivity extends AppCompatActivity {
+public class EditActivity extends AppCompatActivity {
 
     DatePickerDialog picker;
     EditText eText;
@@ -52,17 +48,19 @@ public class CreateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create);
+        setContentView(R.layout.activity_edit);
+
+        Intent intent = getIntent();
 
         //firebase
         firestore = FirebaseFirestore.getInstance();
 
-        addCategory = findViewById(R.id.addCategory);
+        addCategory = findViewById(R.id.editCategory);
 
-        addExpenses = findViewById(R.id.addExpenses);
-        addDescription = findViewById(R.id.addDescription);
+        addExpenses = findViewById(R.id.editExpenses);
+        addDescription = findViewById(R.id.editDescription);
 
-        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit = findViewById(R.id.editBtnSubmit);
 
         firestore.collection("categories")
                 .get()
@@ -77,39 +75,40 @@ public class CreateActivity extends AppCompatActivity {
                 });
 
         // Buat Dropdown category
-        addCategory2 = findViewById(R.id.categorySpnr);
+        addCategory2 = findViewById(R.id.editcategorySpnr);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, currCategories);
         adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
         addCategory2.setAdapter(adapter);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Map<String, Object> person = new HashMap<>();
-                person.put("category", categories.get(addCategory.getText().toString()));
-                //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
-//                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
-                person.put("expenses", addExpenses.getText().toString());
-                person.put("date", eText.getText().toString());
-                person.put("description", addDescription.getText().toString());
+        //Update blm beres
+//        btnSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Map<String, Object> person = new HashMap<>();
+//                person.put("category", categories.get(addCategory.getText().toString()));
+//                //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
+////                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
+//                person.put("expenses", addExpenses.getText().toString());
+//                person.put("date", eText.getText().toString());
+//                person.put("description", addDescription.getText().toString());
+//
+//                firestore.collection("transaction").add(person).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Toast.makeText(getApplicationContext(), "Sukses!", Toast.LENGTH_LONG).show();
+//                        Intent intent =  new Intent(getApplicationContext(), ViewTransactionsActivity.class);
+//                        startActivity(intent);
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }
+//        });
 
-                firestore.collection("transaction").add(person).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getApplicationContext(), "Sukses!", Toast.LENGTH_LONG).show();
-                        Intent intent =  new Intent(getApplicationContext(), ViewTransactionsActivity.class);
-                        startActivity(intent);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed!", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
-        eText=(EditText) findViewById(R.id.addDate);
+        eText=(EditText) findViewById(R.id.editDate);
         eText.setInputType(InputType.TYPE_NULL);
         eText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +118,7 @@ public class CreateActivity extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
                 // date picker dialog
-                picker = new DatePickerDialog(CreateActivity.this,
+                picker = new DatePickerDialog(EditActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

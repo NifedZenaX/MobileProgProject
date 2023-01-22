@@ -8,40 +8,40 @@
     android:layout_margin="8dp">
 
     <EditText
-        android:id="@+id/addCategory"
+        android:id="@+id/editCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Category"
         />
 
     <Spinner
-        android:id="@+id/categorySpnr"
+        android:id="@+id/editcategorySpnr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:id="@+id/addExpenses"
+        android:id="@+id/editExpenses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Expenses"
         />
 
     <EditText
-        android:id="@+id/addDate"
+        android:id="@+id/editDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Date"
         />
 
     <EditText
-        android:id="@+id/addDescription"
+        android:id="@+id/editDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Description"
         />
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/editBtnSubmit"
         android:text="Add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +43,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
     List<Date> dates = new ArrayList<>();
     List<Integer> nominals = new ArrayList<>();
     ListView listView;
+    Button editBtn, delBtn;
     FirebaseFirestore db;
 
 
@@ -57,7 +60,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.options2:
-                intent = new Intent(this, TransactionActivity.class);
+                intent = new Intent(this, CreateActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
@@ -110,57 +113,37 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                                 nominals.add(Integer.parseInt(doc.get("nominal").toString()));
                                 categoryName.add(categories.get(doc.get("category_id").toString()));
                                 try {
-                                    dates.add(new SimpleDateFormat("dd/MM/yyyy").parse(doc.get("date").toString()));
+                                    dates.add(new SimpleDateFormat("dd/MMM/yyyy").parse(doc.get("date").toString()));
                                 } catch (ParseException e) {
                                     throw new RuntimeException(e);
                                 }
                             }
+                            //Masih perlu gw otak atik buat btn del sm editnya, nanti gw cari tau lagi gimana caranya
+                            editBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String transId = doc.getId();
+                                    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+                                    intent.putExtra("transId", transId);
+                                    startActivity(intent);
+                                }
+                            });
+                            delBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    doc.getReference().delete();
+                                    //Refresh activity
+                                    Intent intent = getIntent();
+                                    finish();
+                                    startActivity(intent);
+                                }
+                            });
                         }
                         TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates);
                         System.out.println("Adapter: " + adapter.getCount());
                         listView.setAdapter(adapter);
                     }
                 });
-
-//        db.collection("transaction")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if(task.isSuccessful()){
-//                        List<String> descriptions = new ArrayList<>();
-//                        List<String> categoryNames = new ArrayList<>();
-//                        List<Date> dates = new ArrayList<>();
-//                        List<Integer> nominals = new ArrayList<>();
-//                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                        for (QueryDocumentSnapshot doc: task.getResult()) {
-//                            if(doc.get("user_id").toString() == user.getUid()){
-//                                descriptions.add(doc.get("description").toString());
-//                                nominals.add(Integer.parseInt(doc.get("nominal").toString()));
-//                                try {
-//                                    dates.add(new SimpleDateFormat("dd/MM/yyyy").parse(doc.get("date").toString()));
-//                                } catch (ParseException e) {
-//                                    throw new RuntimeException(e);
-//                                }
-//                                System.out.println("Description: " + descriptions.get(0));
-//                                db.collection("category")
-//                                        .document(doc.get("category_id").toString())
-//                                        .get()
-//                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                                                if(task.isSuccessful()){
-//                                                    categoryNames.add(task.getResult().get("name").toString());
-//                                                }
-//                                            }
-//                                        });
-//                            }
-//                        }
-//                        TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryNames, nominals, dates);
-//                        listView.setAdapter(adapter);
-//                    }
-//                }
-//        });
 
     }
 }

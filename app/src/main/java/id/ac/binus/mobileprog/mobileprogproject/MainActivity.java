@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.options2:
 //                FirebaseAuth.getInstance().signOut();
-                intent = new Intent(this, TransactionActivity.class);
+                intent = new Intent(this, CreateActivity.class);
                 startActivity(intent);
                 finish();
                 return true;

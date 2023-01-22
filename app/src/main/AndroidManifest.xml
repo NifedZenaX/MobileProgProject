@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileProgProject">
         <activity
+            android:name=".EditActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateActivity"
             android:exported="false">
             <meta-data
