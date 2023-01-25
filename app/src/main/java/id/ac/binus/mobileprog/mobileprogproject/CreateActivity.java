@@ -122,7 +122,7 @@ public class CreateActivity extends AppCompatActivity {
                 transaction.put("category", categories.get(addCategory.getText().toString()));
                 //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
 //                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
-                transaction.put("expenses", addExpenses.getText().toString());
+                transaction.put("nominal", addExpenses.getText().toString());
                 transaction.put("date", eText.getText().toString());
                 transaction.put("description", addDescription.getText().toString());
 
