@@ -59,10 +59,11 @@ public class EditActivity extends AppCompatActivity {
 
         addExpenses = findViewById(R.id.editExpenses);
         addDescription = findViewById(R.id.editDescription);
+        addCategory2 = findViewById(R.id.editcategorySpnr);
 
         btnSubmit = findViewById(R.id.editBtnSubmit);
 
-        firestore.collection("categories")
+        firestore.collection("category")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -71,20 +72,17 @@ public class EditActivity extends AppCompatActivity {
                             categories.put(category.get("name").toString(), category.getId());
                             currCategories.add(category.get("name").toString());
                         }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, currCategories);
+                        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+                        addCategory2.setAdapter(adapter);
                     }
                 });
-
-        // Buat Dropdown category
-        addCategory2 = findViewById(R.id.editcategorySpnr);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, currCategories);
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        addCategory2.setAdapter(adapter);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Map<String, Object> transaction = new HashMap<>();
-                transaction.put("category", categories.get(addCategory.getText().toString()));
+                transaction.put("category_id", categories.get(addCategory.getText().toString()));
                 //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
 //                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
                 transaction.put("expenses", addExpenses.getText().toString());
