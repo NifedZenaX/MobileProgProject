@@ -7,6 +7,9 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -44,6 +48,33 @@ public class EditActivity extends AppCompatActivity {
     Map<String, String> categories = Collections.synchronizedMap(new HashMap<String, String>());
     List<String> currCategories = Collections.synchronizedList(new ArrayList<String>());
 
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId())
+        {
+            case R.id.options1:
+                FirebaseAuth.getInstance().signOut();
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.options3:
+                intent = new Intent(this, ViewTransactionsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu2, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +113,10 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Map<String, Object> transaction = new HashMap<>();
-                transaction.put("category_id", categories.get(addCategory.getText().toString()));
+//                transaction.put("category_id", categories.get(addCategory.getText().toString()));
                 //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
-//                person.put("category", categories.get(addCategory2.getSelectedItem().toString()));
-                transaction.put("expenses", addExpenses.getText().toString());
+                transaction.put("category_id", categories.get(addCategory2.getSelectedItem().toString()));
+                transaction.put("nominal", addExpenses.getText().toString());
                 transaction.put("date", eText.getText().toString());
                 transaction.put("description", addDescription.getText().toString());
 

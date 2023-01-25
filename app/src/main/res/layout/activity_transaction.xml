@@ -1,42 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TransactionActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category:"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/labelCat"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/categoryTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/labelCat"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description:"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/labelDesc"
+        android:layout_below="@id/labelCat"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categoryTextView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/labelDesc"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Transaction:"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/labelDate"
+        android:layout_below="@id/labelDesc"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descriptionTextView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/labelDate"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nominal:"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/labelNom"
+        android:layout_below="@id/labelDate"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/nominalTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dateTextView"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/labelNom"/>
 
     <Button
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"/>
+        android:text="Edit"
+        android:layout_below="@id/nominalTextView"
+        android:layout_marginLeft="5dp"/>
 
     <Button
         android:id="@+id/delbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Delete"/>
+        android:text="Delete"
+        android:layout_toRightOf="@id/editBtn"
+        android:layout_below="@id/nominalTextView"
+        android:layout_marginLeft="5dp"/>
 
 
-</LinearLayout>
+</RelativeLayout>
