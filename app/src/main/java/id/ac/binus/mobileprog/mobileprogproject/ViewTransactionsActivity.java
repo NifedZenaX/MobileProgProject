@@ -91,7 +91,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        db.collection("categories")
+        db.collection("category")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -118,7 +118,6 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                             }
                         }
                         TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates, transId);
-                        System.out.println("Adapter: " + adapter.getCount());
                         listView.setAdapter(adapter);
                     }
                 });
