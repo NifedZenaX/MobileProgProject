@@ -94,9 +94,10 @@ public class TransactionAdapter extends BaseAdapter {
                             @Override
                             public void onSuccess(Void unused) {
                                 //Refresh activity
-//                                Intent intent = new Intent(context, ViewTransactionsActivity.class);
-//                                view.getContext().startActivity(intent);
-                                notifyDataSetChanged();
+                                Intent intent = new Intent(view.getContext(), ViewTransactionsActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                view.getContext().startActivity(intent);
+//                                notifyDataSetChanged();
                             }
                         });
             }
