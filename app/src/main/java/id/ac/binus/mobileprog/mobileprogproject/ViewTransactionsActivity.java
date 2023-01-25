@@ -40,7 +40,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
     List<String> descriptions = new ArrayList<>();
     List<String> categoryName = new ArrayList<>();
     Map<String, String> categories = Collections.synchronizedMap(new HashMap<String, String>());
-    List<Date> dates = new ArrayList<>();
+    List<String> dates = new ArrayList<>();
     List<Integer> nominals = new ArrayList<>();
     List<String> transId = new ArrayList<>();
     ListView listView;
@@ -114,11 +114,7 @@ public class ViewTransactionsActivity extends AppCompatActivity {
                                 descriptions.add(doc.get("description").toString());
                                 nominals.add(Integer.parseInt(doc.get("nominal").toString()));
                                 categoryName.add(categories.get(doc.get("category_id").toString()));
-                                try {
-                                    dates.add(new SimpleDateFormat("dd/MMM/yyyy").parse(doc.get("date").toString()));
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
+                                dates.add(doc.get("date").toString());
                             }
                         }
                         TransactionAdapter adapter = new TransactionAdapter(getApplicationContext(), descriptions, categoryName, nominals, dates, transId);

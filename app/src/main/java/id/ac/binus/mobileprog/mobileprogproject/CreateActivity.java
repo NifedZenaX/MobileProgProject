@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -92,6 +94,9 @@ public class CreateActivity extends AppCompatActivity {
                 transaction.put("expenses", addExpenses.getText().toString());
                 transaction.put("date", eText.getText().toString());
                 transaction.put("description", addDescription.getText().toString());
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                transaction.put("user_id", user.getUid());
 
                 firestore.collection("transaction").add(transaction).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
