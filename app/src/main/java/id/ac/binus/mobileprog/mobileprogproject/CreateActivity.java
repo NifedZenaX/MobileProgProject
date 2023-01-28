@@ -43,8 +43,7 @@ public class CreateActivity extends AppCompatActivity {
     DatePickerDialog picker;
     EditText eText;
 
-    Spinner addCategory2;
-    EditText addCategory;
+    Spinner addCategory;
     EditText addExpenses;
     EditText addDescription;
     Button btnSubmit;
@@ -90,11 +89,9 @@ public class CreateActivity extends AppCompatActivity {
         //firebase
         firestore = FirebaseFirestore.getInstance();
 
-        addCategory = findViewById(R.id.addCategory);
-
         addExpenses = findViewById(R.id.addExpenses);
         addDescription = findViewById(R.id.addDescription);
-        addCategory2 = findViewById(R.id.categorySpnr);
+        addCategory = findViewById(R.id.categorySpnr);
 
         btnSubmit = findViewById(R.id.btnSubmit);
 
@@ -109,7 +106,7 @@ public class CreateActivity extends AppCompatActivity {
                         }
                         ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, currCategories);
                         adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-                        addCategory2.setAdapter(adapter);
+                        addCategory.setAdapter(adapter);
                     }
                 });
 
@@ -118,9 +115,7 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Map<String, Object> transaction = new HashMap<>();
-//                transaction.put("category", categories.get(addCategory.getText().toString()));
-                //Nanti tolong dites ini bisa ato engga yg bawah ini, nanti kl mo tes yg bawah ini, atasnya dicomment aja
-                transaction.put("category_id", categories.get(addCategory2.getSelectedItem().toString()));
+                transaction.put("category_id", categories.get(addCategory.getSelectedItem().toString()));
                 transaction.put("nominal", addExpenses.getText().toString());
                 transaction.put("date", eText.getText().toString());
                 transaction.put("description", addDescription.getText().toString());

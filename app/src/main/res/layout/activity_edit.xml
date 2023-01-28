@@ -7,13 +7,6 @@
     android:orientation="vertical"
     android:layout_margin="8dp">
 
-    <EditText
-        android:id="@+id/editCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Category"
-        />
-
     <Spinner
         android:id="@+id/editcategorySpnr"
         android:layout_width="match_parent"
@@ -42,7 +35,7 @@
 
     <Button
         android:id="@+id/editBtnSubmit"
-        android:text="Add"
+        android:text="Edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
